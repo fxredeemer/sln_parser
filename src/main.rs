@@ -7,7 +7,7 @@ mod file_reader;
 
 fn main() -> Result<(), String> {
 
-    let file_reader = FileReader::new("C:\\Venus\\Vantage\\src\\MasterSolution\\MasterSolution.sln".to_owned());
+    let file_reader = FileReader::new("samples/Files.sln".to_owned());
     let parser = Parser::new();
 
     let content = file_reader.get_contents()?;

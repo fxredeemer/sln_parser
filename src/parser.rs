@@ -1,7 +1,12 @@
 use crate::structures::{GeneralInformation, Project, ProjectDraft, Solution};
 use regex::Regex;
-use std::vec;
+use std::{iter, rc::Rc, vec};
 use uuid::Uuid;
+
+#[cfg(windows)]
+const LINE_ENDING: &'static str = "\r\n";
+#[cfg(not(windows))]
+const LINE_ENDING: &'static str = "\n";
 
 pub struct Parser;
 
@@ -15,7 +20,7 @@ impl Parser {
         let (projects, remainder) = parse_projects(remainder);
 
         println!("===========================");
-        println!("{remainder}");
+        //println!("{remainder}");
 
         Ok(Solution {
             general_information,
@@ -26,63 +31,89 @@ impl Parser {
 
 fn parse_projects(mut remainder: &str) -> (Vec<Project>, &str) {
     let mut projects = vec![];
-    while let Some(end_project) = remainder.find("EndProject\r\n") {
-        let (project_str, remainder_str) = remainder.split_at(end_project + "EndProject\r\n".len());
+
+    let project_start = format!("EndProject{}", LINE_ENDING);
+
+    while let Some(end_project) = remainder.find(&project_start) {
+        let (project_str, remainder_str) = remainder.split_at(end_project + project_start.len());
         remainder = remainder_str;
         if let Some(project) = parse_project(project_str) {
             projects.push(project);
         }
     }
 
-    let projects = projects.iter().map(|p| map_project(p, &projects)).collect();
+    let projects = map_projects(&projects);
 
     (projects, remainder)
 }
 
 fn parse_project(data: &str) -> Option<ProjectDraft> {
-    println!("---------------------------");
     let regex = Regex::new(r#"^Project\("\{(.+?)\}"\) = "(.+?)", "(.+?)", "\{(.+?)\}""#).unwrap();
 
-    let eol = data.find("\r\n")?;
+    let eol = data.find(LINE_ENDING)?;
     let (project_details, dependencies) = data.split_at(eol);
 
     let captures = regex.captures(project_details)?;
+
     let project_type = Uuid::parse_str(&captures[1]).ok()?;
-    println!("project_type: {project_type}");
-
     let name = captures[2].to_owned();
-    println!("name: {name}");
-
     let path = captures[3].to_owned();
-    println!("path: {path}");
-
     let id = Uuid::parse_str(&captures[4]).ok()?;
-    println!("id: {id}");
 
-    println!("Dependencies : {dependencies}");
-    println!("---------------------------");
-
-    let dependencies = dependencies.to_owned();
+    let dependencies_string = dependencies.to_owned();
 
     Some(ProjectDraft {
         id,
         name,
         path,
         project_type,
-        dependencies,
+        dependencies_string,
     })
 }
 
-fn map_project(draft: &ProjectDraft, projects: &Vec<ProjectDraft>) -> Project {
-    let dependencies = vec![];
+fn map_projects(projects: &Vec<ProjectDraft>) -> Vec<Project> {
+    let mut out_projects = vec![];
 
-    Project {
-        id: draft.id,
-        name: draft.name.clone(),
-        path: draft.path.clone(),
-        project_type: draft.project_type,
-        dependencies,
+    for draft in projects {
+        let mut dependencies = vec![];
+
+        let depencencies_string = &draft.dependencies_string;
+
+        const START_TAG: &str = "ProjectSection";
+        const END_TAG: &str = "EndProjectSection";
+
+        let regex = Regex::new(r#"\{(.+?)\} = \{(.+?)\}"#).unwrap();
+
+        if let Some(start) = depencencies_string.find(START_TAG) {
+            if let Some(end) = depencencies_string.find(END_TAG) {
+                let contents = &depencencies_string[start..end];
+
+                let split = contents.split(LINE_ENDING);
+
+                for entry in split {
+                    if let Some(capture) = regex.captures(entry) {
+                        if let Ok(id) = Uuid::parse_str(&capture[1]) {
+                            if let Some(project) = projects.iter().filter(|d| d.id == id).next() {
+                                dependencies.push(project.name.to_owned());
+                            }
+                        }
+                    }
+                }
+
+                println!("{contents}");
+            }
+        }
+
+        let project = Project {
+            id: draft.id,
+            name: draft.name.clone(),
+            path: draft.path.clone(),
+            project_type: draft.project_type,
+            dependencies,
+        };
+        out_projects.push(project);
     }
+    out_projects
 }
 
 fn parse_general_information(content: &str) -> Result<(GeneralInformation, &str), String> {

@@ -1,4 +1,4 @@
-use std::rc::Rc;
+use std::fmt::Debug;
 use uuid::Uuid;
 
 #[derive(Debug)]
@@ -21,7 +21,7 @@ pub struct Project
     pub name: String,
     pub path: String,
     pub project_type: Uuid,
-    pub dependencies: Vec<Rc<Project>>
+    pub dependencies: Vec<String>
 }
 
 #[derive(Debug)]
@@ -31,6 +31,5 @@ pub struct ProjectDraft
     pub name: String,
     pub path: String,
     pub project_type: Uuid,
-    pub dependencies: String
+    pub dependencies_string: String,
 }
-
