@@ -89,6 +89,7 @@ fn parse_project_drafts(mut remainder: &str) -> Vec<ProjectDraft> {
 
     while let Some(end_project) = remainder.find(&start_tag) {
         let (project_str, remainder_str) = remainder.split_at(end_project + start_tag.len());
+
         remainder = remainder_str;
         if let Some(project) = parse_project(project_str) {
             projects.push(project);
@@ -110,7 +111,7 @@ fn parse_project(data: &str) -> Option<ProjectDraft> {
     let name = captures[2].to_owned();
     let path = captures[3].to_owned();
     let id = Uuid::parse_str(&captures[4]).ok()?;
-
+    
     let dependencies_string = dependencies.to_owned();
 
     Some(ProjectDraft {
@@ -144,17 +145,19 @@ fn wire_project_dependencies(projects: &Vec<ProjectDraft>) -> Vec<Project> {
 fn parse_dependencies(draft: &ProjectDraft, projects: &[ProjectDraft]) -> Vec<String> {
     let mut dependencies = vec![];
     let depencencies_string = &draft.dependencies_string;
-    const START_TAG: &str = "ProjectSection";
-    const END_TAG: &str = "EndProjectSection";
+
+    const START_TAG: &str = "ProjectSection(ProjectDependencies";
+    let end_tag = &format!("EndProjectSection{}", LINE_ENDING);
+
     if let Some(start) = depencencies_string.find(START_TAG) {
-        if let Some(end) = depencencies_string.find(END_TAG) {
+        if let Some(end) = depencencies_string.find(end_tag) {
             let regex = Regex::new(r#"\{(.+?)\} = \{.+?\}"#).unwrap();
             let contents = &depencencies_string[start..end];
 
-            let split = contents.split(LINE_ENDING);
+            let lines = contents.split(LINE_ENDING);
 
-            for entry in split {
-                if let Some(capture) = regex.captures(entry) {
+            for line in lines {
+                if let Some(capture) = regex.captures(line) {
                     if let Ok(id) = Uuid::parse_str(&capture[1]) {
                         if let Some(project) = projects.iter().find(|d| d.id == id) {
                             dependencies.push(project.name.to_owned());
@@ -162,8 +165,6 @@ fn parse_dependencies(draft: &ProjectDraft, projects: &[ProjectDraft]) -> Vec<St
                     }
                 }
             }
-
-            println!("{contents}");
         }
     }
     dependencies

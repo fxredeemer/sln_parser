@@ -13,15 +13,15 @@
         "CustomOpenDialog"
       ],
       "configurations": [
+        "Release|x86",
+        "Release|x64",
+        "Sideload|x64",
+        "Debug|x86",
+        "Sideload|arm64",
         "Debug|arm64",
         "Debug|x64",
-        "Release|x64",
-        "Sideload|x86",
-        "Debug|x86",
-        "Sideload|x64",
-        "Release|x86",
         "Release|arm64",
-        "Sideload|arm64"
+        "Sideload|x86"
       ]
     },
     {
@@ -31,15 +31,15 @@
       "project_type": "fae04ec0-301f-11d3-bf4b-00c04f79efbc",
       "dependencies": [],
       "configurations": [
-        "Sideload|x64",
-        "Release|arm64",
-        "Sideload|arm64",
-        "Release|x86",
-        "Debug|arm64",
         "Sideload|Win32",
+        "Debug|arm64",
+        "Release|arm64",
+        "Sideload|x64",
+        "Sideload|arm64",
+        "Release|x64",
+        "Release|x86",
         "Debug|x64",
-        "Debug|x86",
-        "Release|x64"
+        "Debug|x86"
       ]
     },
     {
@@ -49,15 +49,15 @@
       "project_type": "c7167f0d-bc9f-4e6e-afe1-012c56b48db5",
       "dependencies": [],
       "configurations": [
-        "Debug|x64",
-        "Debug|x86",
-        "Release|x86",
-        "Sideload|arm64",
+        "Release|x64",
         "Sideload|x64",
+        "Debug|x86",
+        "Sideload|arm64",
+        "Release|x86",
+        "Release|arm64",
         "Sideload|x86",
         "Debug|arm64",
-        "Release|x64",
-        "Release|arm64"
+        "Debug|x64"
       ]
     },
     {
@@ -68,14 +68,14 @@
       "dependencies": [],
       "configurations": [
         "Debug|x64",
-        "Sideload|x64",
-        "Sideload|arm64",
-        "Release|x86",
-        "Sideload|x86",
-        "Debug|arm64",
-        "Debug|x86",
+        "Release|arm64",
         "Release|x64",
-        "Release|arm64"
+        "Debug|x86",
+        "Debug|arm64",
+        "Release|x86",
+        "Sideload|arm64",
+        "Sideload|x64",
+        "Sideload|x86"
       ]
     },
     {
@@ -85,15 +85,15 @@
       "project_type": "fae04ec0-301f-11d3-bf4b-00c04f79efbc",
       "dependencies": [],
       "configurations": [
-        "Debug|x86",
-        "Release|x64",
+        "Debug|arm64",
+        "Sideload|x86",
         "Debug|x64",
         "Release|arm64",
-        "Sideload|x64",
-        "Sideload|x86",
-        "Debug|arm64",
+        "Debug|x86",
+        "Release|x64",
         "Release|x86",
-        "Sideload|arm64"
+        "Sideload|arm64",
+        "Sideload|x64"
       ]
     },
     {
@@ -111,12 +111,12 @@
       "project_type": "8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942",
       "dependencies": [],
       "configurations": [
-        "Debug|arm64",
-        "Debug|Win32",
-        "Debug|x64",
-        "Release|x64",
         "Release|Win32",
-        "Release|arm64"
+        "Debug|arm64",
+        "Debug|x64",
+        "Release|arm64",
+        "Release|x64",
+        "Debug|Win32"
       ]
     },
     {
@@ -127,8 +127,8 @@
       "dependencies": [],
       "configurations": [
         "Release|Any",
-        "Debug|Any",
-        "Sideload|Any"
+        "Sideload|Any",
+        "Debug|Any"
       ]
     },
     {
@@ -162,15 +162,15 @@
       "project_type": "9a19103f-16f7-4668-be54-9a1e7a4f7556",
       "dependencies": [],
       "configurations": [
-        "Debug|x86",
-        "Release|arm64",
         "Release|x64",
-        "Sideload|x64",
-        "Sideload|x86",
-        "Debug|arm64",
-        "Debug|x64",
         "Release|x86",
-        "Sideload|arm64"
+        "Debug|arm64",
+        "Release|arm64",
+        "Sideload|arm64",
+        "Debug|x64",
+        "Debug|x86",
+        "Sideload|x64",
+        "Sideload|x86"
       ]
     }
   ],
