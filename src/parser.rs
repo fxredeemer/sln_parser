@@ -1,6 +1,8 @@
-use crate::structures::{GlobalInformation, Header, Project, ProjectDraft, Solution};
+use crate::structures::{
+    GlobalInformation, GlobalInformationDraft, Header, Project, ProjectDraft, Solution,
+};
 use regex::Regex;
-use std::vec;
+use std::{collections::HashSet, vec};
 use uuid::Uuid;
 
 #[cfg(windows)]
@@ -17,8 +19,29 @@ impl Parser {
 
     pub fn parse_solution_file(&self, content: String) -> Result<Solution, String> {
         let (header, remainder) = parse_general_information(&content)?;
-        let (projects, remainder) = parse_projects(remainder);
-        let global_information = parse_global_information(remainder)?;
+        let (projects, remainder) = parse_project_drafts(remainder);
+        let global_information = parse_global_information_draft(remainder)?;
+
+        let mut projects = wire_project_dependencies(&projects);
+
+        let lines = global_information
+            .project_configurations_string
+            .split(LINE_ENDING);
+
+        let regex = Regex::new(r#"\{(.+)\}\..+ = (\w+\|\w+)"#).unwrap();
+        for line in lines {
+            if let Some(captures) = regex.captures(line) {
+                if let Ok(id) = Uuid::parse_str(&captures[1]) {
+                    if let Some(project) = projects.iter_mut().find(|d| d.id == id) {
+                        project.configurations.insert(captures[2].to_owned());
+                    }
+                }
+            }
+        }
+
+        let global_information = GlobalInformation {
+            solution_configurations: global_information.solution_configurations,
+        };
 
         Ok(Solution {
             header,
@@ -28,7 +51,7 @@ impl Parser {
     }
 }
 
-fn parse_projects(mut remainder: &str) -> (Vec<Project>, &str) {
+fn parse_project_drafts(mut remainder: &str) -> (Vec<ProjectDraft>, &str) {
     let mut projects = vec![];
 
     let start_tag = format!("EndProject{}", LINE_ENDING);
@@ -40,8 +63,6 @@ fn parse_projects(mut remainder: &str) -> (Vec<Project>, &str) {
             projects.push(project);
         }
     }
-
-    let projects = map_projects(&projects);
 
     (projects, remainder)
 }
@@ -70,38 +91,11 @@ fn parse_project(data: &str) -> Option<ProjectDraft> {
     })
 }
 
-fn map_projects(projects: &Vec<ProjectDraft>) -> Vec<Project> {
+fn wire_project_dependencies(projects: &Vec<ProjectDraft>) -> Vec<Project> {
     let mut out_projects = vec![];
 
     for draft in projects {
-        let mut dependencies = vec![];
-
-        let depencencies_string = &draft.dependencies_string;
-
-        const START_TAG: &str = "ProjectSection";
-        const END_TAG: &str = "EndProjectSection";
-
-        let regex = Regex::new(r#"\{(.+?)\} = \{(.+?)\}"#).unwrap();
-
-        if let Some(start) = depencencies_string.find(START_TAG) {
-            if let Some(end) = depencencies_string.find(END_TAG) {
-                let contents = &depencencies_string[start..end];
-
-                let split = contents.split(LINE_ENDING);
-
-                for entry in split {
-                    if let Some(capture) = regex.captures(entry) {
-                        if let Ok(id) = Uuid::parse_str(&capture[1]) {
-                            if let Some(project) = projects.iter().find(|d| d.id == id) {
-                                dependencies.push(project.name.to_owned());
-                            }
-                        }
-                    }
-                }
-
-                println!("{contents}");
-            }
-        }
+        let dependencies = parse_dependencies(draft, projects);
 
         let project = Project {
             id: draft.id,
@@ -109,30 +103,79 @@ fn map_projects(projects: &Vec<ProjectDraft>) -> Vec<Project> {
             path: draft.path.clone(),
             project_type: draft.project_type,
             dependencies,
-            configurations: vec![],
+            configurations: HashSet::new(),
         };
         out_projects.push(project);
     }
     out_projects
 }
 
-fn parse_global_information(data: &str) -> Result<GlobalInformation, String> {
-    let global_part = get_global_part(data)?;
-    let solution_configuration_data = get_solution_configuration_part(global_part)?;
+fn parse_dependencies(draft: &ProjectDraft, projects: &Vec<ProjectDraft>) -> Vec<String> {
+    let mut dependencies = vec![];
+    let depencencies_string = &draft.dependencies_string;
+    const START_TAG: &str = "ProjectSection";
+    const END_TAG: &str = "EndProjectSection";
+    if let Some(start) = depencencies_string.find(START_TAG) {
+        if let Some(end) = depencencies_string.find(END_TAG) {
+            let regex = Regex::new(r#"\{(.+?)\} = \{.+?\}"#).unwrap();
+            let contents = &depencencies_string[start..end];
 
+            let split = contents.split(LINE_ENDING);
+
+            for entry in split {
+                if let Some(capture) = regex.captures(entry) {
+                    if let Ok(id) = Uuid::parse_str(&capture[1]) {
+                        if let Some(project) = projects.iter().find(|d| d.id == id) {
+                            dependencies.push(project.name.to_owned());
+                        }
+                    }
+                }
+            }
+
+            println!("{contents}");
+        }
+    }
+    dependencies
+}
+
+fn parse_global_information_draft(data: &str) -> Result<GlobalInformationDraft, String> {
+    let global_part = get_global_part(data)?;
+
+    let solution_configuration_part = get_solution_configuration_part(global_part)?;
+    let solution_configurations = get_solution_configurations(solution_configuration_part);
+
+    let project_configurations_string = get_project_configuration_part(global_part)?;
+
+    Ok(GlobalInformationDraft {
+        solution_configurations,
+        project_configurations_string,
+    })
+}
+
+fn get_project_configuration_part(global_part: &str) -> Result<String, String> {
+    let section_start_tag = "GlobalSection(ProjectConfigurationPlatforms)";
+    let section_end_tag = "EndGlobalSection";
+    let section_start = global_part
+        .find(&section_start_tag)
+        .ok_or("Unable to find Start of Global Section ProjectConfigurationPlatforms")?;
+    let data = &global_part[section_start..];
+    let section_end = data
+        .find(&section_end_tag)
+        .ok_or("Unable to find End of Global Section ProjectConfigurationPlatforms")?;
+    let project_configurations_string = global_part[..section_end].to_owned();
+    Ok(project_configurations_string)
+}
+
+fn get_solution_configurations(solution_configuration_data: &str) -> Vec<String> {
     let mut solution_configurations = vec![];
     let lines = solution_configuration_data.split(LINE_ENDING);
-    
     let regex = Regex::new(r#"(\w+\|\w+) = \w+\|\w+"#).unwrap();
     for line in lines {
-        if let Some(captures) = regex.captures_iter(line).next(){
+        if let Some(captures) = regex.captures_iter(line).next() {
             solution_configurations.push(captures[1].to_owned());
         }
     }
-
-    Ok(GlobalInformation {
-        solution_configurations,
-    })
+    solution_configurations
 }
 
 fn get_solution_configuration_part(global_part: &str) -> Result<&str, String> {
