@@ -1,7 +1,7 @@
 use serde::Serialize;
+use std::collections::HashSet;
 use std::fmt::Debug;
 use uuid::Uuid;
-use std::collections::HashSet;
 
 #[derive(Debug, Serialize)]
 pub struct Solution {

@@ -110,7 +110,7 @@ fn wire_project_dependencies(projects: &Vec<ProjectDraft>) -> Vec<Project> {
     out_projects
 }
 
-fn parse_dependencies(draft: &ProjectDraft, projects: &Vec<ProjectDraft>) -> Vec<String> {
+fn parse_dependencies(draft: &ProjectDraft, projects: &[ProjectDraft]) -> Vec<String> {
     let mut dependencies = vec![];
     let depencencies_string = &draft.dependencies_string;
     const START_TAG: &str = "ProjectSection";
