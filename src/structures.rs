@@ -24,3 +24,13 @@ pub struct Project
     pub dependencies: Vec<Rc<Project>>
 }
 
+#[derive(Debug)]
+pub struct ProjectDraft
+{
+    pub id : Uuid,
+    pub name: String,
+    pub path: String,
+    pub project_type: Uuid,
+    pub dependencies: String
+}
+
