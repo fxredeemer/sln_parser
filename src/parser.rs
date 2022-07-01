@@ -1,12 +1,12 @@
 use crate::structures::{GeneralInformation, Project, ProjectDraft, Solution};
 use regex::Regex;
-use std::{iter, rc::Rc, vec};
+use std::vec;
 use uuid::Uuid;
 
 #[cfg(windows)]
-const LINE_ENDING: &'static str = "\r\n";
+const LINE_ENDING: &str = "\r\n";
 #[cfg(not(windows))]
-const LINE_ENDING: &'static str = "\n";
+const LINE_ENDING: &str = "\n";
 
 pub struct Parser;
 
@@ -93,7 +93,7 @@ fn map_projects(projects: &Vec<ProjectDraft>) -> Vec<Project> {
                 for entry in split {
                     if let Some(capture) = regex.captures(entry) {
                         if let Ok(id) = Uuid::parse_str(&capture[1]) {
-                            if let Some(project) = projects.iter().filter(|d| d.id == id).next() {
+                            if let Some(project) = projects.iter().find(|d| d.id == id) {
                                 dependencies.push(project.name.to_owned());
                             }
                         }
