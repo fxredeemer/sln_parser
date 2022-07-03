@@ -1,14 +1,10 @@
+use crate::constants::LINE_ENDING;
 use crate::structures::{
     GlobalInformation, GlobalInformationDraft, Header, Project, ProjectDraft, Solution,
 };
 use regex::Regex;
 use std::{collections::HashSet, vec};
 use uuid::Uuid;
-
-#[cfg(windows)]
-const LINE_ENDING: &str = "\r\n";
-#[cfg(not(windows))]
-const LINE_ENDING: &str = "\n";
 
 pub struct Parser;
 
@@ -112,7 +108,7 @@ fn parse_project(data: &str) -> Option<ProjectDraft> {
     let name = captures[2].to_owned();
     let path = captures[3].to_owned();
     let id = Uuid::parse_str(&captures[4]).ok()?;
-    
+
     let dependencies_string = dependencies.to_owned();
 
     Some(ProjectDraft {
