@@ -57,7 +57,8 @@ fn get_projects_part(content: &str) -> Result<&str, String> {
     let projects_start = content
         .find(start_tag)
         .ok_or("Can not find Projects Part")?;
-    let projects_end = content.rfind(end_tag).ok_or("Can not find Projects Part")?;
+    let mut projects_end = content.rfind(end_tag).ok_or("Can not find Projects Part")?;
+    projects_end += end_tag.len();
     let projects_part = &content[projects_start..projects_end];
     Ok(projects_part)
 }
