@@ -19,11 +19,11 @@ impl DotFormatter {
             let project_name = &project.name;
 
             if project.dependencies.iter().len() == 0 {
-                output += &format!("    {}{}", project_name, LINE_ENDING);
+                output += &format!("    \"{}\"{}", project_name, LINE_ENDING);
             }
 
             for dependency in project.dependencies.iter() {
-                output += &(format!("    {} -> {}{}", project_name, dependency, LINE_ENDING));
+                output += &(format!("    \"{}\" -> \"{}\"{}", project_name, dependency, LINE_ENDING));
             }
         }
 
