@@ -39,7 +39,7 @@ impl Parser {
     }
 }
 
-fn get_header_part(content: &String) -> Result<&str, String> {
+fn get_header_part(content: &str) -> Result<&str, String> {
     let header_end_tag = "Project(";
     let header_end = content
         .find(header_end_tag)

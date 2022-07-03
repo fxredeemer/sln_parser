@@ -23,7 +23,10 @@ impl DotFormatter {
             }
 
             for dependency in project.dependencies.iter() {
-                output += &(format!("    \"{}\" -> \"{}\"{}", project_name, dependency, LINE_ENDING));
+                output += &(format!(
+                    "    \"{}\" -> \"{}\"{}",
+                    project_name, dependency, LINE_ENDING
+                ));
             }
         }
 
