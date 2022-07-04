@@ -1,0 +1,16 @@
+digraph dependencies { 
+    "Files.FullTrust" -> "CustomOpenDialog"
+    "Files.FullTrust" -> "FilesLauncher"
+    "Files.Uwp"
+    "Files.Package"
+    "Files.Shared"
+    "BackgroundTasks"
+    "FilesOpenDialog"
+    "CustomOpenDialog"
+    "Files.InteractionTests"
+    "src"
+    "tests"
+    "Files.UI"
+    "Files.Backend"
+    "FilesLauncher"
+}

@@ -1,4 +1,6 @@
-use crate::{constants::LINE_ENDING, structures::Solution};
+use std::path::Path;
+
+use crate::{constants::LINE_ENDING, solution_formatter::SolutionFormatter, structures::Solution};
 
 pub struct DotFormatter;
 
@@ -6,8 +8,10 @@ impl DotFormatter {
     pub fn new() -> Self {
         Self
     }
+}
 
-    pub fn export(&self, solution: &Solution) -> String {
+impl SolutionFormatter for DotFormatter {
+    fn format(&self, solution: &Solution) -> String {
         let mut output = String::new();
 
         let header = format!("digraph dependencies {{ {}", LINE_ENDING);
@@ -33,5 +37,9 @@ impl DotFormatter {
         output += ending;
 
         output
+    }
+
+    fn get_file_ending(&self) -> &Path {
+        Path::new("dot")
     }
 }

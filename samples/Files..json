@@ -1,0 +1,205 @@
+{
+  "header": {
+    "visual_studio_version": "M",
+    "minimum_visual_studio_version": "M"
+  },
+  "projects": [
+    {
+      "id": "533f9e86-ee0a-4fcb-b70c-f29532c1b787",
+      "name": "Files.FullTrust",
+      "path": "src\\Files.FullTrust\\Files.FullTrust.csproj",
+      "project_type": "9a19103f-16f7-4668-be54-9a1e7a4f7556",
+      "dependencies": [
+        "CustomOpenDialog",
+        "FilesLauncher"
+      ],
+      "configurations": [
+        "Release|arm64",
+        "Debug|arm64",
+        "Release|x86",
+        "Sideload|arm64",
+        "Sideload|x86",
+        "Release|x64",
+        "Sideload|x64",
+        "Debug|x64",
+        "Debug|x86"
+      ]
+    },
+    {
+      "id": "64c30c4e-a69a-411c-9f78-776e7aad583c",
+      "name": "Files.Uwp",
+      "path": "src\\Files.Uwp\\Files.Uwp.csproj",
+      "project_type": "fae04ec0-301f-11d3-bf4b-00c04f79efbc",
+      "dependencies": [],
+      "configurations": [
+        "Release|arm64",
+        "Sideload|Win32",
+        "Sideload|arm64",
+        "Debug|arm64",
+        "Debug|x64",
+        "Debug|x86",
+        "Sideload|x64",
+        "Release|x86",
+        "Release|x64"
+      ]
+    },
+    {
+      "id": "3b15596c-3db9-4b58-b4c8-442d06a8c130",
+      "name": "Files.Package",
+      "path": "src\\Files.Package\\Files.Package.wapproj",
+      "project_type": "c7167f0d-bc9f-4e6e-afe1-012c56b48db5",
+      "dependencies": [],
+      "configurations": [
+        "Release|arm64",
+        "Release|x64",
+        "Release|x86",
+        "Debug|x64",
+        "Sideload|x86",
+        "Sideload|x64",
+        "Debug|x86",
+        "Debug|arm64",
+        "Sideload|arm64"
+      ]
+    },
+    {
+      "id": "0533133f-2559-4b53-a0fd-0970bc0e312e",
+      "name": "Files.Shared",
+      "path": "src\\Files.Shared\\Files.Shared.csproj",
+      "project_type": "9a19103f-16f7-4668-be54-9a1e7a4f7556",
+      "dependencies": [],
+      "configurations": [
+        "Release|arm64",
+        "Sideload|x64",
+        "Release|x86",
+        "Debug|x86",
+        "Release|x64",
+        "Debug|x64",
+        "Sideload|x86",
+        "Debug|arm64",
+        "Sideload|arm64"
+      ]
+    },
+    {
+      "id": "3d19293f-0e3a-4946-ade3-680a1e9123ec",
+      "name": "BackgroundTasks",
+      "path": "src\\BackgroundTasks\\BackgroundTasks.csproj",
+      "project_type": "fae04ec0-301f-11d3-bf4b-00c04f79efbc",
+      "dependencies": [],
+      "configurations": [
+        "Release|x86",
+        "Sideload|x86",
+        "Debug|x86",
+        "Release|arm64",
+        "Debug|arm64",
+        "Sideload|x64",
+        "Release|x64",
+        "Sideload|arm64",
+        "Debug|x64"
+      ]
+    },
+    {
+      "id": "0175b70c-1e29-4a3f-aa4f-c2017b040ef0",
+      "name": "FilesOpenDialog",
+      "path": "FilesOpenDialog",
+      "project_type": "2150e333-8fdc-42a3-9474-1a3956d46de8",
+      "dependencies": [],
+      "configurations": []
+    },
+    {
+      "id": "a2ff3f3b-8ebc-4108-b99d-1476b7876656",
+      "name": "CustomOpenDialog",
+      "path": "src\\Files.OpenDialog\\CustomOpenDialog\\CustomOpenDialog.vcxproj",
+      "project_type": "8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942",
+      "dependencies": [],
+      "configurations": [
+        "Release|x64",
+        "Release|Win32",
+        "Debug|arm64",
+        "Debug|x64",
+        "Release|arm64",
+        "Debug|Win32"
+      ]
+    },
+    {
+      "id": "b7e43d1f-ac8b-4958-95d5-a06cdd1feacd",
+      "name": "Files.InteractionTests",
+      "path": "tests\\Files.InteractionTests\\Files.InteractionTests.csproj",
+      "project_type": "9a19103f-16f7-4668-be54-9a1e7a4f7556",
+      "dependencies": [],
+      "configurations": [
+        "Release|Any",
+        "Sideload|Any",
+        "Debug|Any"
+      ]
+    },
+    {
+      "id": "a74dce98-a744-4d71-a2b1-7ee4fed0936b",
+      "name": "src",
+      "path": "src",
+      "project_type": "2150e333-8fdc-42a3-9474-1a3956d46de8",
+      "dependencies": [],
+      "configurations": []
+    },
+    {
+      "id": "481de2ea-e6ce-4a9c-a220-3b543b95aaa1",
+      "name": "tests",
+      "path": "tests",
+      "project_type": "2150e333-8fdc-42a3-9474-1a3956d46de8",
+      "dependencies": [],
+      "configurations": []
+    },
+    {
+      "id": "a188c26b-e731-4e0b-9d17-d21cebd9b43f",
+      "name": "Files.UI",
+      "path": "Files.UI",
+      "project_type": "2150e333-8fdc-42a3-9474-1a3956d46de8",
+      "dependencies": [],
+      "configurations": []
+    },
+    {
+      "id": "4cfe0bbc-8d07-49a0-8b10-4edd61abcf57",
+      "name": "Files.Backend",
+      "path": "src\\Files.Backend\\Files.Backend.csproj",
+      "project_type": "9a19103f-16f7-4668-be54-9a1e7a4f7556",
+      "dependencies": [],
+      "configurations": [
+        "Debug|x86",
+        "Sideload|arm64",
+        "Debug|x64",
+        "Sideload|x64",
+        "Release|x86",
+        "Debug|arm64",
+        "Release|x64",
+        "Sideload|x86",
+        "Release|arm64"
+      ]
+    },
+    {
+      "id": "25fd5045-6d4c-4dd0-b3ac-613ab59cbb07",
+      "name": "FilesLauncher",
+      "path": "src\\Files.OpenDialog\\FilesLauncher\\FilesLauncher.vcxproj",
+      "project_type": "8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942",
+      "dependencies": [],
+      "configurations": [
+        "Release|x64",
+        "Release|Win32",
+        "Debug|arm64",
+        "Debug|x64",
+        "Debug|Win32",
+        "Release|arm64"
+      ]
+    }
+  ],
+  "global_information": {
+    "solution_configurations": [
+      "Debug|arm64",
+      "Debug|x64",
+      "Debug|x86",
+      "Release|arm64",
+      "Release|x64",
+      "Release|x86",
+      "Sideload|arm64",
+      "Sideload|x64"
+    ]
+  }
+}
