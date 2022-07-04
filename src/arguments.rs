@@ -6,6 +6,7 @@ use clap::{Parser, clap_derive::ArgEnum};
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ArgEnum, Debug)]
 pub enum Format {
     Dot,
+    Json,
     //Plantuml,
     //Mermaid
 }
@@ -17,6 +18,6 @@ pub enum Format {
     pub in_file: PathBuf,
     #[clap(short = 'o', long = "out-folder")]
     pub out_folder: Option<PathBuf>,
-    #[clap(short = 'f', long = "out-format", arg_enum, default_value_t = Format::Dot)]
-    pub out_format: Format,
+    #[clap(short = 'f', long = "out-format", arg_enum)]
+    pub out_format: Vec<Format>,
  }
