@@ -6,9 +6,9 @@ use regex::Regex;
 use std::{collections::HashSet, vec};
 use uuid::Uuid;
 
-pub struct Parser;
+pub struct SlnParser;
 
-impl Parser {
+impl SlnParser {
     pub fn new() -> Self {
         Self
     }

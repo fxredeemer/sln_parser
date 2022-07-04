@@ -1,16 +1,22 @@
+use arguments::Arguments;
+use clap::Parser;
 use dot_formatter::DotFormatter;
 use file_reader::FileHandler;
-use parser::Parser;
+use sln_parser::SlnParser;
 
 mod constants;
 mod dot_formatter;
 mod file_reader;
-mod parser;
+mod sln_parser;
 mod structures;
+mod arguments;
 
 fn main() -> Result<(), String> {
+    let arguments = Arguments::parse();
+    print!("{:?}", arguments);
+
     let file_handler = FileHandler::new();
-    let parser = Parser::new();
+    let parser = SlnParser::new();
 
     let content = file_handler.get_contents("samples/Files.sln")?;
     let solution = parser.parse_solution_file(content)?;
