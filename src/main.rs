@@ -18,15 +18,18 @@ fn main() -> Result<(), String> {
     let file_handler = FileHandler::new();
     let parser = SlnParser::new();
 
-    let content = file_handler.get_contents("samples/Files.sln")?;
+    let content = file_handler.get_contents(&arguments.in_file)?;
     let solution = parser.parse_solution_file(content)?;
 
+    let json_file = arguments.in_file.with_extension("json");
+    let dot_file = arguments.in_file.with_extension("dot");
+
     let serialized = serde_json::to_string_pretty(&solution).unwrap();
-    file_handler.save_to_file("samples/files.json", serialized)?;
+    file_handler.save_to_file(&json_file, serialized)?;
 
     let dot_exporter = DotFormatter::new();
     let dot_output = dot_exporter.export(&solution);
-    file_handler.save_to_file("samples/graph.dot", dot_output)?;
+    file_handler.save_to_file(&dot_file, dot_output)?;
 
     Ok(())
 }
