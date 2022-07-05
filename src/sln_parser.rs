@@ -15,7 +15,7 @@ impl SlnParser {
 
     pub fn parse_solution_file(&self, content: String) -> Result<Solution, String> {
         let header_part = get_header_part(&content)?;
-        let header = parse_general_information(header_part)?;
+        let header = parse_header(header_part)?;
 
         let projects_part = get_projects_part(&content)?;
         let projects = parse_project_drafts(projects_part);
@@ -228,9 +228,9 @@ fn get_global_part(data: &str) -> Result<&str, String> {
     Ok(&data[start..end])
 }
 
-fn parse_general_information(general_information: &str) -> Result<Header, String> {
+fn parse_header(_general_information: &str) -> Result<Header, String> {
     Ok(Header {
-        visual_studio_version: general_information[..1].to_owned(),
-        minimum_visual_studio_version: general_information[..1].to_owned(),
+        visual_studio_version: "".to_owned(), /*general_information[..1]*/
+        minimum_visual_studio_version: "".to_owned(), /*general_information[..1]*/
     })
 }

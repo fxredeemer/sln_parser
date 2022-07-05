@@ -25,12 +25,11 @@ fn main() -> Result<(), String> {
 
     let in_file = &arguments.in_file;
 
+    println!("ASDF");
     let content = file_handler.get_contents(in_file)?;
     let solution = parser.parse_solution_file(content)?;
 
     let solution_formatter_factory = SolutionFormatterFactory::new();
-
-    println!("");
 
     for format in arguments.out_format.iter() {
         let mut out_path = get_out_folder(&arguments)?;

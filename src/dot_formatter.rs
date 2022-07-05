@@ -1,6 +1,6 @@
-use std::path::Path;
-
 use crate::{constants::LINE_ENDING, solution_formatter::SolutionFormatter, structures::Solution};
+use std::fmt::Write;
+use std::path::Path;
 
 pub struct DotFormatter;
 
@@ -17,20 +17,21 @@ impl SolutionFormatter for DotFormatter {
         let header = format!("digraph dependencies {{ {}", LINE_ENDING);
         let ending = "}";
 
-        output += &header;
+        output.push_str(&header);
 
         for project in solution.projects.iter() {
             let project_name = &project.name;
 
             if project.dependencies.iter().len() == 0 {
-                output += &format!("    \"{}\"{}", project_name, LINE_ENDING);
+                let _ = write!(&mut output, "    \"{}\"{}", project_name, LINE_ENDING);
             }
 
             for dependency in project.dependencies.iter() {
-                output += &(format!(
+                let _ = write!(
+                    &mut output,
                     "    \"{}\" -> \"{}\"{}",
                     project_name, dependency, LINE_ENDING
-                ));
+                );
             }
         }
 
