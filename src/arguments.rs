@@ -6,7 +6,7 @@ use clap::{clap_derive::ArgEnum, Parser};
 pub enum Format {
     Dot,
     Json,
-    //Plantuml,
+    Plantuml,
     //Mermaid
 }
 

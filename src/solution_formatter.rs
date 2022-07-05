@@ -2,7 +2,7 @@ use std::path::Path;
 
 use crate::{
     arguments::Format, dot_formatter::DotFormatter, json_formatter::JsonFormatter,
-    structures::Solution,
+    plantuml_formatter::PlantUmlFormatter, structures::Solution,
 };
 
 pub trait SolutionFormatter {
@@ -21,6 +21,7 @@ impl SolutionFormatterFactory {
         match format {
             Format::Dot => Box::new(DotFormatter::new()),
             Format::Json => Box::new(JsonFormatter::new()),
+            Format::Plantuml => Box::new(PlantUmlFormatter::new()),
         }
     }
 }
