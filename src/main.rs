@@ -12,6 +12,7 @@ mod constants;
 mod dot_formatter;
 mod file_reader;
 mod json_formatter;
+mod mermaid_formatter;
 mod plantuml_formatter;
 mod sln_parser;
 mod solution_formatter;

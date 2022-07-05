@@ -7,7 +7,7 @@ pub enum Format {
     Dot,
     Json,
     Plantuml,
-    //Mermaid
+    Mermaid,
 }
 
 #[derive(Parser, Debug)]
