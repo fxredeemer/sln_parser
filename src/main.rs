@@ -24,7 +24,7 @@ fn main() -> Result<(), String> {
 
     println!("ASDF");
     let content = file_handler.get_contents(in_file)?;
-    let solution = parser.parse_solution_file(content)?;
+    let solution = parser.parse_solution_file(&arguments.in_file, content)?;
 
     let solution_formatter_factory = SolutionFormatterFactory::new();
 

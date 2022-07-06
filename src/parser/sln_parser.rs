@@ -1,19 +1,31 @@
 use crate::constants::LINE_ENDING;
 use crate::structures::{
-    GlobalInformation, GlobalInformationDraft, Header, Project, ProjectDraft, Solution,
+    GlobalInformation, GlobalInformationDraft, Project, ProjectDraft, Solution,
 };
 use regex::Regex;
+
+use std::path::Path;
 use std::{collections::HashSet, vec};
 use uuid::Uuid;
 
-pub struct SlnParser;
+use super::additional_dependency_parser::AdditionalDependencyParser;
+use super::header_parser::parse_header;
+
+pub struct SlnParser {
+    dependency_parser: AdditionalDependencyParser,
+}
 
 impl SlnParser {
     pub fn new() -> Self {
-        Self
+        let dependency_parser = AdditionalDependencyParser::new();
+        Self { dependency_parser }
     }
 
-    pub fn parse_solution_file(&self, content: String) -> Result<Solution, String> {
+    pub fn parse_solution_file(
+        &self,
+        sln_path: &Path,
+        content: String,
+    ) -> Result<Solution, String> {
         let header_part = get_header_part(&content)?;
         let header = parse_header(header_part)?;
 
@@ -26,6 +38,8 @@ impl SlnParser {
         let mut projects = wire_project_dependencies(&projects);
 
         set_project_configurations(&global_information, &mut projects);
+
+        self.dependency_parser.fun_name(&mut projects, sln_path);
 
         let global_information = GlobalInformation {
             solution_configurations: global_information.solution_configurations,
@@ -226,31 +240,4 @@ fn get_global_part(data: &str) -> Result<&str, String> {
         .ok_or("Unable to find Start of Global")?;
     let end = data.find(&end_tag).ok_or("Unable to find End of Global")?;
     Ok(&data[start..end])
-}
-
-fn parse_header(general_information: &str) -> Result<Header, String> {
-    println!("{}", general_information);
-
-    general_information.split(LINE_ENDING);
-
-    let version_regex = Regex::new(r#"VisualStudioVersion = ([\d\.]+)"#).unwrap();
-    let minimal_version_regex = Regex::new(r#"MinimumVisualStudioVersion = ([\d\.]+)"#).unwrap();
-
-    let visual_studio_version = match version_regex.captures_iter(general_information).next() {
-        Some(captures) => captures[1].to_owned(),
-        None => "".to_owned(),
-    };
-
-    let minimum_visual_studio_version = match minimal_version_regex
-        .captures_iter(general_information)
-        .next()
-    {
-        Some(captures) => captures[1].to_owned(),
-        None => "".to_owned(),
-    };
-
-    Ok(Header {
-        visual_studio_version,
-        minimum_visual_studio_version,
-    })
 }
