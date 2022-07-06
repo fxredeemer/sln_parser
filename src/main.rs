@@ -4,13 +4,13 @@ use arguments::Arguments;
 use clap::Parser;
 use file_reader::FileHandler;
 use formatters::solution_formatter::SolutionFormatterFactory;
-use sln_parser::SlnParser;
+use parser::sln_parser::SlnParser;
 
 mod arguments;
 mod constants;
 mod file_reader;
 mod formatters;
-mod sln_parser;
+mod parser;
 mod structures;
 
 fn main() -> Result<(), String> {
