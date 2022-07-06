@@ -1,9 +1,9 @@
 use std::path::Path;
 
 use crate::{
-    arguments::Format, dot_formatter::DotFormatter, json_formatter::JsonFormatter,
-    mermaid_formatter::MermaidFormatter, plantuml_formatter::PlantUmlFormatter,
-    structures::Solution,
+    arguments::Format, formatters::dot_formatter::DotFormatter,
+    formatters::json_formatter::JsonFormatter, formatters::mermaid_formatter::MermaidFormatter,
+    formatters::plantuml_formatter::PlantUmlFormatter, structures::Solution,
 };
 
 pub trait SolutionFormatter {

@@ -3,19 +3,14 @@ use std::path::PathBuf;
 use arguments::Arguments;
 use clap::Parser;
 use file_reader::FileHandler;
+use formatters::solution_formatter::SolutionFormatterFactory;
 use sln_parser::SlnParser;
-
-use crate::solution_formatter::SolutionFormatterFactory;
 
 mod arguments;
 mod constants;
-mod dot_formatter;
 mod file_reader;
-mod json_formatter;
-mod mermaid_formatter;
-mod plantuml_formatter;
+mod formatters;
 mod sln_parser;
-mod solution_formatter;
 mod structures;
 
 fn main() -> Result<(), String> {

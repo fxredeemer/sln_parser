@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::solution_formatter::SolutionFormatter;
+use crate::formatters::solution_formatter::SolutionFormatter;
 use serde_json::*;
 
 pub struct JsonFormatter;

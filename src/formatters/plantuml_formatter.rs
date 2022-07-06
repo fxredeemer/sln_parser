@@ -1,7 +1,7 @@
 use std::fmt::Write;
 use std::path::Path;
 
-use crate::{constants::LINE_ENDING, solution_formatter::SolutionFormatter};
+use crate::{constants::LINE_ENDING, formatters::solution_formatter::SolutionFormatter};
 
 pub struct PlantUmlFormatter;
 
