@@ -7,7 +7,7 @@ pub fn parse_header(general_information: &str) -> Result<Header, String> {
 
     let visual_studio_version = match version_regex.captures_iter(general_information).next() {
         Some(captures) => captures[1].to_owned(),
-        None => "".to_owned(),
+        None => return Err("Unable to read Visual studio version".to_owned()),
     };
 
     let minimum_visual_studio_version = match minimal_version_regex
@@ -15,7 +15,7 @@ pub fn parse_header(general_information: &str) -> Result<Header, String> {
         .next()
     {
         Some(captures) => captures[1].to_owned(),
-        None => "".to_owned(),
+        None => return Err("Unable to read minimal Visual studio version".to_owned()),
     };
 
     Ok(Header {
