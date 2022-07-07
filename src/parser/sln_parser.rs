@@ -39,7 +39,8 @@ impl SlnParser {
 
         set_project_configurations(&global_information, &mut projects);
 
-        self.dependency_parser.fun_name(&mut projects, sln_path);
+        self.dependency_parser
+            .get_additional_dependencies_from_project_files(&mut projects, sln_path);
 
         let global_information = GlobalInformation {
             solution_configurations: global_information.solution_configurations,
