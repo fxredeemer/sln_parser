@@ -1,11 +1,7 @@
-use crate::{constants::LINE_ENDING, structures::Header};
+use crate::structures::Header;
 use regex::Regex;
 
 pub fn parse_header(general_information: &str) -> Result<Header, String> {
-    println!("{}", general_information);
-
-    general_information.split(LINE_ENDING);
-
     let version_regex = Regex::new(r#"VisualStudioVersion = ([\d\.]+)"#).unwrap();
     let minimal_version_regex = Regex::new(r#"MinimumVisualStudioVersion = ([\d\.]+)"#).unwrap();
 

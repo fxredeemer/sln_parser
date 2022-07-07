@@ -15,14 +15,12 @@ mod structures;
 
 fn main() -> Result<(), String> {
     let arguments = Arguments::parse();
-    print!("{:?}", arguments);
 
     let file_handler = FileHandler::new();
     let parser = SlnParser::new();
 
     let in_file = &arguments.in_file;
 
-    println!("ASDF");
     let content = file_handler.get_contents(in_file)?;
     let solution = parser.parse_solution_file(&arguments.in_file, content)?;
 
@@ -36,7 +34,7 @@ fn main() -> Result<(), String> {
         out_path.push(&arguments.in_file.file_stem().unwrap());
         out_path.set_extension(file_ending);
 
-        println!("OUT_FILE  {}", &out_path.to_str().unwrap());
+        println!("Created file {}", &out_path.display());
 
         let contents = formatter.format(&solution);
         file_handler.save_to_file(&out_path, contents)?;
