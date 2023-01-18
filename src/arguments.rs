@@ -1,8 +1,8 @@
 use std::path::PathBuf;
 
-use clap::{clap_derive::ArgEnum, Parser};
+use clap::{clap_derive::ValueEnum, Parser};
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ArgEnum, Debug)]
+#[derive(Clone, ValueEnum, Debug)]
 pub enum Format {
     Dot,
     Json,
@@ -17,6 +17,6 @@ pub struct Arguments {
     pub in_file: PathBuf,
     #[clap(short = 'o', long = "out-folder")]
     pub out_folder: Option<PathBuf>,
-    #[clap(short = 'f', long = "out-format", arg_enum)]
+    #[clap(short = 'f', long = "out-format", value_enum)]
     pub out_format: Vec<Format>,
 }
